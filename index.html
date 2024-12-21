@@ -1,0 +1,41 @@
+<!doctype html>
+<html>
+    <head>
+        <meta charset="utf8">
+        <title>SAT to NQC</title>
+        <script src="script.js"></script>
+    </head>
+    <body>
+        <h1>SAT</h1>
+        <textarea id="sat-input" rows="24" cols="80">
+c this supports a subset of the DIMACS cnf format
+c the number of variables and clauses is ignored
+c line breaks are irrelevant, clauses end with 0
+c the last clause does not need a terminating 0
+c VARIABLES MUST ONLY OCCUR ONCE PER CLAUSE, THIS IS NOT CHECKED
+c also all clauses should contain at least two variables, this is not checked
+c
+p cnf 5 4
+1 -5 4 0
+-1 5 3 4 0
+-3 -4 0
+5 4 0
+        </textarea>
+        <button id="compute-button">Compute</button>
+        <p id="result-sat"></p>
+        <h1>3-SAT</h1>
+        <p id="log-3sat"></p>
+        <p id="result-3sat"></p>
+        <h1>3,3-SAT</h1>
+        <p id="log-33sat"></p>
+        <p id="result-33sat"></p>
+        <h1>SNQCRCD</h1>
+        <p>TODO</p>
+        <h1>NQCRCD</h1>
+        <p>TODO</p>
+        <h1>NQCRC</h1>
+        <p>TODO</p>
+        <h1>NQC</h1>
+        <p>TODO</p>
+    </body>
+</html>
