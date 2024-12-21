@@ -1,3 +1,13 @@
+function prettyCNF(cnf) {
+    let str = "[\n";
+    for (let i=0; i<cnf.length-1; i++) {
+        str += "  " + JSON.stringify(cnf[i]) + ",\n";
+    }
+    str += "  " + JSON.stringify(cnf[cnf.length-1]) + "\n";
+    str += "]";
+    return str;
+}
+
 window.addEventListener("load", () => {
     const computeButton = document.getElementById("compute-button");
     computeButton.addEventListener("click", async () => {
@@ -46,7 +56,7 @@ window.addEventListener("load", () => {
             clause.sort((a,b) => Math.abs(a) - Math.abs(b));
         }
 
-        document.getElementById("result-sat").textContent = JSON.stringify(cnf_sat);
+        document.getElementById("result-sat").textContent = prettyCNF(cnf_sat);
 
         // ----------------
         // convert to 3-SAT
@@ -75,7 +85,7 @@ window.addEventListener("load", () => {
 
         document.getElementById("log-3sat").innerHTML = "<ul>" + log_3sat + "</ul>";
 
-        document.getElementById("result-3sat").textContent = JSON.stringify(cnf_3sat);
+        document.getElementById("result-3sat").textContent = prettyCNF(cnf_3sat);
 
         // ------------------
         // convert to 3,3-SAT
@@ -132,7 +142,18 @@ window.addEventListener("load", () => {
 
         document.getElementById("log-33sat").innerHTML = "<ul>" + log_33sat + "</ul>";
 
-        document.getElementById("result-33sat").textContent = JSON.stringify(cnf_33sat);
+        document.getElementById("result-33sat").textContent = prettyCNF(cnf_33sat);
+
+        // --------------
+        // compute SNQRCD
+        // --------------
+
+        let log_snqcrcd = "";
+
+        log_snqcrcd += "<li>There are " + maxVar + " variables, so the size of each gadget will be (" + maxVar + " * 14)² = " + (maxVar*14) + "².</li>";
+        log_snqcrcd += "<li>There are " + maxVar + " variables and " + cnf_33sat.length + " clauses, so there will be " + maxVar + " + " + cnf_33sat.length + " = " + (maxVar + cnf_33sat.length) + " gadgets."
+
+        document.getElementById("log-snqcrcd").innerHTML += "<ul>" + log_snqcrcd + "</ul>";
 
         computeButton.disabled = false;
     });

@@ -7,6 +7,7 @@
     </head>
     <body>
         <h1>SAT</h1>
+        <p>Satisfiability of a CNF</p>
         <textarea id="sat-input" rows="24" cols="80">
 c this supports a subset of the DIMACS cnf format
 c the number of variables and clauses is ignored
@@ -14,6 +15,7 @@ c line breaks are irrelevant, clauses end with 0
 c the last clause does not need a terminating 0
 c VARIABLES MUST ONLY OCCUR ONCE PER CLAUSE, THIS IS NOT CHECKED
 c also all clauses should contain at least two variables, this is not checked
+c also the numbers of the variables should be continuous, this is not checked
 c
 p cnf 5 4
 1 -5 4 0
@@ -22,15 +24,18 @@ p cnf 5 4
 5 4 0
         </textarea>
         <button id="compute-button">Compute</button>
-        <p id="result-sat"></p>
+        <pre id="result-sat"></pre>
         <h1>3-SAT</h1>
+        <p>Satisfiability of a CNF with a maximum of three variables per clause</p>
         <p id="log-3sat"></p>
-        <p id="result-3sat"></p>
+        <pre id="result-3sat"></pre>
         <h1>3,3-SAT</h1>
+        <p>Satisfiability of a CNF with a maximum of three variables per clause and a maximum of three occurences per variable</p>
         <p id="log-33sat"></p>
-        <p id="result-33sat"></p>
+        <pre id="result-33sat"></pre>
         <h1>SNQCRCD</h1>
         <p>TODO</p>
+        <p id="log-snqcrcd"></p>
         <h1>NQCRCD</h1>
         <p>TODO</p>
         <h1>NQCRC</h1>
