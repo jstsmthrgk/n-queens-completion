@@ -150,11 +150,92 @@ window.addEventListener("load", () => {
 
         let log_snqcrcd = "";
 
-        log_snqcrcd += "<li>There are " + maxVar + " variables, so the size of each gadget will be (" + maxVar + " * 14)² = " + (maxVar*14) + "².</li>";
+        log_snqcrcd += "<li>There are " + maxVar + " variables, so the size of each gadget will be (" + maxVar + " * 21)² = " + (maxVar*21) + "².</li>";
+        const n_snqcrcd = maxVar*21;
         log_snqcrcd += "<li>There are " + maxVar + " variables and " + cnf_33sat.length + " clauses, so there will be " + maxVar + " + " + cnf_33sat.length + " = " + (maxVar + cnf_33sat.length) + " gadgets."
+        
+        set_snqcrcd = [];
+        
+        num_occurences = [];
+        
+        for (let i = 0; i < maxVar; i++) {
+            set_snqcrcd.push({
+                "$comment": "variable " + (i+1),
+                n: n_snqcrcd,
+                C: [0+21*i,1+21*i,3+21*i],
+                R: [0+21*i,1+21*i,3+21*i],
+                "D-": [],
+                "D+": []
+            });
+            num_occurences[i+1] = 0;
+        }
+        
+        const offsets = {}
+        offsets[-1] = [0,4,5];
+        offsets[1] = [1,2,6];
+        
+        for (const clause of cnf_33sat) {
+            if (clause.length == 2) {
+                v0 = Math.abs(clause[0]);
+                v1 = Math.abs(clause[1]);
+                c0 = (v0-1)*21 + offsets[Math.sign(clause[0])][num_occurences[v0]];
+                c1 = (v1-1)*21 + offsets[Math.sign(clause[1])][num_occurences[v1]];
+                num_occurences[v0]++;
+                num_occurences[v1]++;
+                set_snqcrcd.push({
+                    "$comment": "clause " + JSON.stringify(clause),
+                    n: n_snqcrcd,
+                    C: [c0,c1],
+                    R: [0],
+                    "D-": [],
+                    "D+": []
+                });
+            } else {
+                v0 = Math.abs(clause[0]);
+                v1 = Math.abs(clause[1]);
+                v2 = Math.abs(clause[2]);
+                c0 = (v0-1)*21 + offsets[Math.sign(clause[0])][num_occurences[v0]];
+                c1 = (v1-1)*21 + offsets[Math.sign(clause[1])][num_occurences[v1]];
+                c2 = (v2-1)*21 + offsets[Math.sign(clause[2])][num_occurences[v2]];
+                num_occurences[v0]++;
+                num_occurences[v1]++;
+                num_occurences[v2]++;
+                set_snqcrcd.push({
+                    "$comment": "clause " + JSON.stringify(clause),
+                    n: n_snqcrcd,
+                    C: [c0,c1,c2],
+                    R: [0,7,14],
+                    "D-": [c0-14,c2-7],
+                    "D+": []
+                });
+
+            }
+        }
 
         document.getElementById("log-snqcrcd").innerHTML += "<ul>" + log_snqcrcd + "</ul>";
 
+        let res_snqrcd = "";
+        for (const subproblem of set_snqcrcd) {
+            res_snqrcd += "\n";
+            res_snqrcd += "  {\n";
+            res_snqrcd += "    \"$comment\":\"" + subproblem["$comment"] + "\",\n";
+            res_snqrcd += "    \"n\":" + subproblem["n"] + ",\n";
+            res_snqrcd += "    \"C\":" + JSON.stringify(subproblem["C"]) + ",\n";
+            res_snqrcd += "    \"R\":" + JSON.stringify(subproblem["R"]) + ",\n";
+            res_snqrcd += "    \"D-\":" + JSON.stringify(subproblem["D-"]) + ",\n";
+            res_snqrcd += "    \"D+\":" + JSON.stringify(subproblem["D+"]) + "\n";
+            res_snqrcd += "  },";
+        }
+        res_snqrcd = res_snqrcd.substring(0,res_snqrcd.length-1);
+
+        document.getElementById("result-snqcrcd").textContent = "[" + res_snqrcd + "\n]";
+
+        // --------------
+        // compute NQCRCD
+        // --------------
+        
+        // TODO
+        
         computeButton.disabled = false;
     });
 });
