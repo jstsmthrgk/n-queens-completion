@@ -8,6 +8,29 @@ function prettyCNF(cnf) {
     return str;
 }
 
+function prettyArray(arr, indent) {
+    out = "";
+    for (let i = 0; i < arr.length-1; i++) {
+        if (i%16 == 0) {
+            out += "\n";
+            for (let j = 0; j < indent; j++) {
+                out += " ";
+            }
+        }
+        out += arr[i] + ",";
+    }
+    if (arr.length > 0) {
+        if ((arr.length-1) % 16 == 0) {
+            out += "\n";
+            for (let j = 0; j < indent; j++) {
+                out += " ";
+            }
+        }
+        out += arr[arr.length-1];
+    }
+    return out;
+}
+
 window.addEventListener("load", () => {
     const computeButton = document.getElementById("compute-button");
     computeButton.addEventListener("click", async () => {
@@ -212,7 +235,7 @@ window.addEventListener("load", () => {
             }
         }
 
-        document.getElementById("log-snqcrcd").innerHTML += "<ul>" + log_snqcrcd + "</ul>";
+        document.getElementById("log-snqcrcd").innerHTML = "<ul>" + log_snqcrcd + "</ul>";
 
         let res_snqrcd = "";
         for (const subproblem of set_snqcrcd) {
@@ -233,9 +256,51 @@ window.addEventListener("load", () => {
         // --------------
         // compute NQCRCD
         // --------------
+
+        let log_nqcrcd = "";
         
-        // TODO
+        n_nqcrcd = (set_snqcrcd.length*2-1) * set_snqcrcd[0].n;
+        log_nqcrcd += "<li>There are " + set_snqcrcd.length + " subproblems of size " + set_snqcrcd[0].n + " so the size will be (" + set_snqcrcd.length + "*2-1) * " + set_snqcrcd[0].n + " = " + n_nqcrcd + "." ;
+
+        const obj_nqcrcd = {
+            n: n_nqcrcd,
+            C: [],
+            R: [],
+            "D-": [],
+            "D+": []
+        };
         
+        for (let i = 0; i < set_snqcrcd.length; i++) {
+            obj_nqcrcd.C.push(...set_snqcrcd[i].C.map(c => c+2*n_snqcrcd*(set_snqcrcd.length-1-i)));
+            obj_nqcrcd.R.push(...set_snqcrcd[i].R.map(r => r+2*n_snqcrcd*i));
+            obj_nqcrcd["D-"].push(...set_snqcrcd[i]["D-"].map(d => d+2*n_snqcrcd*(set_snqcrcd.length-1-2*i)));
+        }
+        
+        obj_nqcrcd.C.sort((a,b) => a-b);
+        obj_nqcrcd.R.sort((a,b) => a-b);
+        obj_nqcrcd["D-"].sort((a,b) => a-b);
+        
+        for (let i = 0; i < 2*n_snqcrcd*(set_snqcrcd.length-1)+1; i++) {
+            obj_nqcrcd["D+"].push(i);
+        }
+
+        for (let i = 2*n_snqcrcd*(set_snqcrcd.length); i < 4*n_snqcrcd*(set_snqcrcd.length) - 2; i++) {
+            obj_nqcrcd["D+"].push(i);
+        }
+
+        document.getElementById("log-nqcrcd").innerHTML = "<ul>" + log_nqcrcd + "</ul>";
+        
+        let res_nqcrcd = "";
+        res_nqcrcd += "{\n";
+        res_nqcrcd += "  \"n\":" + obj_nqcrcd.n + ",\n";
+        res_nqcrcd += "  \"C\":[" + prettyArray(obj_nqcrcd.C,4) + "\n  ],\n";
+        res_nqcrcd += "  \"R\":[" + prettyArray(obj_nqcrcd.R,4) + "\n  ],\n";
+        res_nqcrcd += "  \"D-\":[" + prettyArray(obj_nqcrcd["D-"],4) + "\n  ],\n";
+        res_nqcrcd += "  \"D+\":[" + prettyArray(obj_nqcrcd["D+"],4) + "\n  ],\n";
+        res_nqcrcd += "}"
+        
+        document.getElementById("result-nqcrcd").textContent = res_nqcrcd;
+
         computeButton.disabled = false;
     });
 });

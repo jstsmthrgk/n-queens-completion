@@ -6,7 +6,9 @@
         <script src="script.js"></script>
     </head>
     <body>
-        <h1>SAT</h1>
+        <h1>SAT to NQC</h1>
+        <p>This is not yet finished, but already a lot of fun.</p>
+        <h2>SAT</h2>
         <p>Satisfiability of a CNF</p>
         <textarea id="sat-input" rows="24" cols="80">
 c this supports a subset of the DIMACS cnf format
@@ -25,23 +27,25 @@ p cnf 5 4
         </textarea>
         <button id="compute-button">Compute</button>
         <pre><code id="result-sat"></code></pre>
-        <h1>3-SAT</h1>
+        <h2>3-SAT</h2>
         <p>Satisfiability of a CNF with a maximum of three variables per clause</p>
         <p id="log-3sat"></p>
         <pre><code id="result-3sat"></code></pre>
-        <h1>3,3-SAT</h1>
+        <h2>3,3-SAT</h2>
         <p>Satisfiability of a CNF with a maximum of three variables per clause and a maximum of three occurences per variable</p>
         <p id="log-33sat"></p>
         <pre><code id="result-33sat"></code></pre>
-        <h1>SNQCRCD</h1>
-        <p>TODO</p>
+        <h2>SNQCRCD</h2>
+        <p>Set of NQCRCD Problems where D+ is the empty set, which interact on the Sumdiagonals.</p>
         <p id="log-snqcrcd"></p>
         <pre><code id="result-snqcrcd"></code></pre>
-        <h1>NQCRCD</h1>
+        <h2>NQCRCD</h2>
+        <p>N-Queens Completion with sets for allowed Columns and Rows and forbidden Difference- and Sumdiagonals. There are no queens given.</p>
+        <p id="log-nqcrcd"></p>
+        <pre><code id="result-nqcrcd"></code></pre>
+        <h2>NQCRC</h2>
         <p>TODO</p>
-        <h1>NQCRC</h1>
-        <p>TODO</p>
-        <h1>NQC</h1>
+        <h2>NQC</h2>
         <p>TODO</p>
     </body>
 </html>
